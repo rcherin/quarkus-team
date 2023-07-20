@@ -47,5 +47,4 @@ public class AccountTransaction extends PanacheEntityBase {
     // TODO: Convert to enum
     public String tx_type;
     public String tx_details;
-
 }
