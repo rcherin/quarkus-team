@@ -1,21 +1,24 @@
 package org.acme;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("/transactions")
+@Path("transactions")
 public class AccountResource {
 
     @GET
     @Path("/account/{acc_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<AccountTransaction> getAccountTransactions(@PathParam("acc_id") String accountId) {
+    public List<AccountTransaction> getAccountTransactions(@PathParam("acc_id") String accountId,
+    @QueryParam("fromDateTime") LocalDateTime fromDateTime, @QueryParam("toDateTime") LocalDateTime toDateTime) {
         List<AccountTransaction> transactions = AccountTransaction.list("acc_id", accountId);
 
         return transactions;
