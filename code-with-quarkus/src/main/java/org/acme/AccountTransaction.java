@@ -1,21 +1,24 @@
 package org.acme;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "transactions", schema="transaction")
 public class AccountTransaction extends PanacheEntityBase {
-    enum Status {
+    public enum Status {
         pending,
         rejected,
         complete
     }
-    enum TransactionType {
+    public enum TransactionType {
         pos,
         atm,
         transfer,
@@ -35,16 +38,32 @@ public class AccountTransaction extends PanacheEntityBase {
    */
     @Id
     //TODO: Convert to type UUID
-    public String tx_id;
-    public String acc_id;
-    public Timestamp tx_ts;
+    @Column(name="tx_id", length=40, nullable = false)
+    public String transactionId;
+    
+    @Column(name="acc_id", length=40, nullable = false)
+    public String accountId;
 
-    // TODO: Convert to enum
-    public String status;
+    @Column(name="tx_ts", nullable = false)
+    public LocalDateTime transactionDateTime;
+
+    @Enumerated(EnumType.STRING )
+    @Column (nullable = false, length = 40)
+    public Status status;
+
+    @Column (nullable = false)
     public Integer amount;
-    public String merchantname;
-    public String merchant_id;
-    // TODO: Convert to enum
-    public String tx_type;
-    public String tx_details;
+    
+    @Column(name="merchantname")
+    public String merchantName;
+
+    @Column(name="merchant_id")
+    public String merchantId;
+
+    @Column(name="tx_type")
+    @Enumerated(EnumType.STRING)
+    public TransactionType transactionType;
+
+    @Column(name="tx_details")
+    public String transactionDetails;
 }
