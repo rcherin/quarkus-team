@@ -12,6 +12,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import io.quarkus.panache.common.Page;
 
 
 @Path("transactions")
@@ -37,6 +38,13 @@ public class AccountResource {
     @Path("{tx_id}")
     public Response getByTransactionId(@PathParam("tx_id") String transactionId) {
         return Response.ok(AccountTransaction.findById(transactionId)).build();
+    }
+
+    @GET
+    @Path("{pageNumber}/{pageSize}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByTransactionId(@PathParam("pageNumber") Integer pageNumber,@PathParam("pageSize") Integer pageSize) {
+        return Response.ok(transactionRepository.findByTxnPagination(pageNumber,pageSize)).build();
     }
     
 }
