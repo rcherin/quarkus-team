@@ -11,6 +11,8 @@ import org.acme.AccountTransaction.Status;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
 
 
 @ApplicationScoped
@@ -43,7 +45,11 @@ public class TransactionRepository implements PanacheRepository <AccountTransact
         return find(queryBuilder.toString(), params).list();
     }
 
-
+  public List<AccountTransaction> findByTxnPagination(Integer pageNumber,Integer pageSize){
+    	PanacheQuery<AccountTransaction> allTxn =AccountTransaction.findAll();
+    	List<AccountTransaction> pageTxn = allTxn.page(Page.of(pageNumber, pageSize)).list();
+    	return pageTxn;
+    }
 
 
 }    
